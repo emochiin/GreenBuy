@@ -1,0 +1,3 @@
+public enum Category {
+    OBST, GEMUESE, MILCHPRODUKTE, FLEISCH, BACKWAREN, SONSTIGES
+}

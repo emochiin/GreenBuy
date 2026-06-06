@@ -1,0 +1,12 @@
+Product zuerst —
+    einfachste Klasse, keine Abhängigkeiten. Private Felder, Getter, equals()/hashCode() nur über die ID. Wenn du willst: record in Java 16+ macht sie automatisch immutable.
+Customer danach
+    — enthält eine List<Product> als Kaufhistorie. Wichtig: im Getter Collections.unmodifiableList(...) zurückgeben, nie die echte Liste.
+ProductService
+    — hier leben alle 5 Stream-Methoden. Bekommt die Produktliste per Konstruktor injiziert (wichtig für Testbarkeit). Keine static-Methoden.
+FileService
+    — liest CSV mit BufferedReader, parst Zeile für Zeile, ignoriert ungültige Zeilen mit try/catch. Exportiert Statistiken als .csv oder .txt. Ebenfalls instanzbasiert, kein static.
+Tests
+    — ProductServiceTest mit JUnit 5, alle Edge-Cases (leere Liste, Kategorie nicht vorhanden usw.). FileServiceTest mit Mockito: eine BufferedReader-Instanz mocken, Fehlerfall simulieren.
+Main zuletzt
+    — einfach alle Schritte in der richtigen Reihenfolge aufrufen.

@@ -1,0 +1,37 @@
+[ {
+  "id" : 1,
+  "name" : "Apfel",
+  "category" : "OBST",
+  "price" : 2.49,
+  "co2Value" : -0.3
+}, {
+  "id" : 2,
+  "name" : "Karotte",
+  "category" : "GEMUESE",
+  "price" : 1.29,
+  "co2Value" : -0.5
+}, {
+  "id" : 3,
+  "name" : "Milch",
+  "category" : "MILCHPRODUKTE",
+  "price" : 1.09,
+  "co2Value" : 0.8
+}, {
+  "id" : 4,
+  "name" : "Roggenbrot",
+  "category" : "BACKWAREN",
+  "price" : 3.49,
+  "co2Value" : 0.2
+}, {
+  "id" : 5,
+  "name" : "Honig",
+  "category" : "SONSTIGES",
+  "price" : 5.99,
+  "co2Value" : -0.1
+}, {
+  "id" : 6,
+  "name" : "Lipliner",
+  "category" : "SONSTIGES",
+  "price" : 1.09,
+  "co2Value" : 1.0
+} ]
