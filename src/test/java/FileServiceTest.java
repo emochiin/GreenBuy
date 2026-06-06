@@ -117,4 +117,74 @@ public class FileServiceTest {
 
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void writeCatalogToCSVCreatesCorrectContent() throws IOException {
+        List<Product> products = List.of(
+                new Product(1, "Apfel", Category.OBST, 2.39, 0.08),
+                new Product(3, "Milch", Category.MILCHPRODUKTE, 1.19, 0.1)
+        );
+        Path catalogJson = tempDir.resolve("catalog.json");
+        FileService fileService = new FileService(catalogJson.toString());
+
+        fileService.writeCatalogToCSV(products);
+
+        List<String> lines = Files.readAllLines(tempDir.resolve("catalog.csv"));
+        assertEquals("id,name,category,price,co2Value", lines.get(0));
+        assertEquals("1,Apfel,OBST,2.39,0.08", lines.get(1));
+        assertEquals("3,Milch,MILCHPRODUKTE,1.19,0.1", lines.get(2));
+    }
+
+    @Test
+    void readCatalogFromCSVReturnsCorrectProducts() throws IOException {
+        String csv = """
+                id,name,category,price,co2Value
+                1,Apfel,OBST,2.39,0.08
+                3,Milch,MILCHPRODUKTE,1.19,0.1
+                """;
+        Files.writeString(tempDir.resolve("catalog.csv"), csv);
+        FileService fileService = new FileService(tempDir.resolve("catalog.json").toString());
+
+        List<Product> result = fileService.readCatalogFromCSV();
+
+        assertEquals(2, result.size());
+        assertEquals(1, result.getFirst().getId());
+        assertEquals("Apfel", result.getFirst().getName());
+        assertEquals(Category.OBST, result.getFirst().getCategory());
+        assertEquals(2.39, result.getFirst().getPrice());
+        assertEquals(0.08, result.getFirst().getCo2Value());
+    }
+
+    @Test
+    void writeThenReadCatalogCSVReturnsOriginalProducts() throws IOException {
+        List<Product> products = List.of(
+                new Product(1, "Apfel", Category.OBST, 2.39, 0.08),
+                new Product(3, "Milch", Category.MILCHPRODUKTE, 1.19, 0.1)
+        );
+        FileService fileService = new FileService(tempDir.resolve("catalog.json").toString());
+
+        fileService.writeCatalogToCSV(products);
+        List<Product> result = fileService.readCatalogFromCSV();
+
+        assertEquals(2, result.size());
+        assertEquals(1, result.get(0).getId());
+        assertEquals(3, result.get(1).getId());
+    }
+
+    @Test
+    void readCatalogFromCSVWithMissingFileReturnsEmptyList() {
+        FileService fileService = new FileService("nonexistent/catalog.json");
+        List<Product> result = fileService.readCatalogFromCSV();
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void writeEmptyCatalogToCSVThenReadReturnsEmptyList() throws IOException {
+        FileService fileService = new FileService(tempDir.resolve("catalog.json").toString());
+
+        fileService.writeCatalogToCSV(List.of());
+        List<Product> result = fileService.readCatalogFromCSV();
+
+        assertTrue(result.isEmpty());
+    }
 }
